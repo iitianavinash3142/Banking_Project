@@ -16,7 +16,8 @@ public class BankingController {
 
     @Autowired
     private TransactionRepository transactionRepository;
-
+    
+    /* Method for adding new user */
     @PostMapping("/add")
     public @ResponseBody String addUser(@RequestBody User user){
         user.setAccountNo(user.getMobileNo());
@@ -25,13 +26,14 @@ public class BankingController {
 
         return "User added successfully";
     }
-
+    
+    /* Method for getting all users info */
     @RequestMapping("/all")
     public @ResponseBody Iterable<User> getAllUser(){
         return userRepository.findAll();
     }
 
-
+    /* Method for Handling Login API */
     @PostMapping("/login")
     public @ResponseBody  String login(@RequestBody Map<String, Object> detail){
         String username = (String) detail.get("username");
@@ -46,7 +48,7 @@ public class BankingController {
         return "Successfully Login";
     }
 
-
+   /* Method for handling deposit API */
     @PostMapping("/deposit")
     public @ResponseBody  String depositAmount(@RequestBody Map<String, Object> detail){
         String accountNo = (String) detail.get("accountNo");
@@ -69,7 +71,8 @@ public class BankingController {
 
         return "Success Deposit";
     }
-
+    
+    /* Method for handling withdraw API */
     @PostMapping("/withdraw")
     public @ResponseBody  String withdrawAmount(@RequestBody Map<String, Object> detail){
         String accountNo = (String) detail.get("accountNo");
@@ -94,7 +97,8 @@ public class BankingController {
 
         return "Success Withdraw";
     }
-
+    
+    /* Method for handling update Pass Code API */
     @PostMapping("/updatePassCode")
     public @ResponseBody  String updatePassCode(@RequestBody Map<String, Object> detail){
         String accountNo = (String) detail.get("accountNo");
@@ -114,7 +118,7 @@ public class BankingController {
         return "Pass Code updated Successfully";
     }
 
-
+    /* Method for handling tranfer amount between accounts API */
     @PostMapping("/transferAmount")
     public @ResponseBody  String transferAmount(@RequestBody Map<String, Object> detail){
         String toAccountNo = (String) detail.get("toAccountNo");
@@ -153,24 +157,28 @@ public class BankingController {
         return "Amount successfully transferred";
     }
 
+    /* Method for getting one usser details and API for user to see personal details */
     @RequestMapping("/get/{id}")
     public @ResponseBody User getUser(@PathVariable("id") String mobileNo){
         return userRepository.findById(mobileNo).orElse(null);
 
     }
 
+    /* Method for updating personal details and API for updating personal details */
     @RequestMapping(value = "/get/{id}" , method = RequestMethod.PUT)
     public @ResponseBody String updateUser(@RequestBody User user, @PathVariable("id") String mobileNo){
         userRepository.save(user);
         return "Update Successfully";
     }
-
+    
+    /* Method for deleting user Account and APT for users to delete their account */
     @RequestMapping(value = "/get/{id}" , method = RequestMethod.DELETE)
     public @ResponseBody String deleteUser(@PathVariable("id") String mobileNo){
         userRepository.deleteById(mobileNo);
         return "Delete Successfully";
     }
 
+    /* Method for handling check Balance API */
     @PostMapping("/checkBalance")
     public @ResponseBody String checkBalance(@RequestBody Map<String, Object> detail){
         String accountNo = (String) detail.get("accountNo");
@@ -181,6 +189,7 @@ public class BankingController {
         return "Account Balance : " + String.valueOf(user.getAccountBalance());
     }
 
+    /* Another Method for updating user details and It is different way */
     @RequestMapping(value = "/get_2/{id}" , method = RequestMethod.PUT)
     public @ResponseBody String updateUser2(@RequestBody Map<String, Object> detail, @PathVariable("id") String mobileNo){
         String name = (String) detail.get("name");
@@ -191,7 +200,8 @@ public class BankingController {
         userRepository.save(user);
         return "Update Successfully";
     }
-
+    
+    /* Method for handling mini Statement API */
     @PostMapping("/miniStatement")
     public @ResponseBody List<Transaction> miniStatement(@RequestBody Map<String, Object> detail){
          String mobileNo  = (String) detail.get("mobileNo");
